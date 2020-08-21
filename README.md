@@ -8,5 +8,5 @@ Proje Raspberry Pi adlı mikroişlemci ile gerçekleştirilmiştir. İşletim si
 
 Çalışmada, CSI arayüzü ile bağlanılan PiCam ve PIR sensörü kullanılmıştır.
 
-![](https://github.com/FurkanDemiray/PiAlarm/blob/master/picam.png) ![]
-!(https://github.com/FurkanDemiray/PiAlarm/blob/master/pir.jpg)
+![](https://github.com/FurkanDemiray/PiAlarm/blob/master/picam.png)
+![](https://github.com/FurkanDemiray/PiAlarm/blob/master/pir.jpg)

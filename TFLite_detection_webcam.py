@@ -1,28 +1,20 @@
-######## Webcam Object Detection Using Tensorflow-trained Classifier #########
-#
-# Author: Evan Juras
-# Date: 10/27/19
-# Description: 
-# This program uses a TensorFlow Lite model to perform object detection on a live webcam
-# feed. It draws boxes and scores around the objects of interest in each frame from the
-# webcam. To improve FPS, the webcam object runs in a separate thread from the main program.
-# This script will work with either a Picamera or regular USB webcam.
-#
-# This code is based off the TensorFlow Lite image classification example at:
-# https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py
-#
-# I added my own method of drawing boxes and labels using OpenCV.
-
-# Import packages
 import os
 import argparse
 import cv2
 import numpy as np
-import sys
+import sys;sys.path
 import time
 from threading import Thread
 import importlib.util
+import time
+import pandas as pd
+import mailer
 
+current_time = time.time()
+remain_time=0;
+takeImage=True
+
+detect_obj = np.empty(shape=[0,2])
 # Define VideoStream class to handle streaming of video from webcam in separate processing thread
 # Source - Adrian Rosebrock, PyImageSearch: https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
 class VideoStream:
@@ -37,11 +29,11 @@ class VideoStream:
         # Read first frame from the stream
         (self.grabbed, self.frame) = self.stream.read()
 
-	# Variable to control when the camera is stopped
+    # Variable to control when the camera is stopped
         self.stopped = False
 
     def start(self):
-	# Start the thread that reads frames from the video stream
+    # Start the thread that reads frames from the video stream
         Thread(target=self.update,args=()).start()
         return self
 
@@ -58,11 +50,11 @@ class VideoStream:
             (self.grabbed, self.frame) = self.stream.read()
 
     def read(self):
-	# Return the most recent frame
+    # Return the most recent frame
         return self.frame
 
     def stop(self):
-	# Indicate that the camera and thread should be stopped
+    # Indicate that the camera and thread should be stopped
         self.stopped = True
 
 # Define and parse input arguments
@@ -159,6 +151,8 @@ videostream = VideoStream(resolution=(imW,imH),framerate=30).start()
 time.sleep(1)
 
 #for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
+
+
 while True:
 
     # Start timer (for calculating frame rate)
@@ -186,8 +180,11 @@ while True:
     classes = interpreter.get_tensor(output_details[1]['index'])[0] # Class index of detected objects
     scores = interpreter.get_tensor(output_details[2]['index'])[0] # Confidence of detected objects
     #num = interpreter.get_tensor(output_details[3]['index'])[0]  # Total number of detected objects (inaccurate and not needed)
-
-    # Loop over all detections and draw detection box if confidence is above minimum threshold
+    if takeImage:
+        cv2.imwrite("frame.jpg",frame)
+        takeImage=False
+     
+    
     for i in range(len(scores)):
         if ((scores[i] > min_conf_threshold) and (scores[i] <= 1.0)):
 
@@ -203,26 +200,61 @@ while True:
             # Draw label
             object_name = labels[int(classes[i])] # Look up object name from "labels" array using class index
             label = '%s: %d%%' % (object_name, int(scores[i]*100)) # Example: 'person: 72%'
+            
+            print("Nesne: "+object_name+" Oran: '%d%%' " % (int(scores[i]*100)))
+            
+            newrow = [object_name, int(scores[i]*100)]
+            detect_obj = np.vstack([detect_obj, newrow])
+
+            remain_time = time.time() - current_time
+            
             labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2) # Get font size
             label_ymin = max(ymin, labelSize[1] + 10) # Make sure not to draw label too close to top of window
             cv2.rectangle(frame, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), (255, 255, 255), cv2.FILLED) # Draw white box to put label text in
             cv2.putText(frame, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
+    
+                            
 
+            
+    
     # Draw framerate in corner of frame
     cv2.putText(frame,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
 
     # All the results have been drawn on the frame, so it's time to display it.
-    cv2.imshow('Object detector', frame)
+    cv2.imshow('Nesne Tarayici', frame)
 
     # Calculate framerate
     t2 = cv2.getTickCount()
     time1 = (t2-t1)/freq
     frame_rate_calc= 1/time1
 
+    if cv2.waitKey(1) == ord('a'):
+        print (detect_obj)
+
     # Press 'q' to quit
-    if cv2.waitKey(1) == ord('q'):
+    if remain_time>10:
+        
+        print("15 sn Nesne Tanımlama Tamamlandı")
         break
+    
+detect_obj = pd.DataFrame(data=detect_obj, columns=["Nesne", "Deger"])
+detect_obj[['Deger']] = detect_obj[['Deger']].astype(float)
+detect_obj[['Nesne']] = detect_obj[['Nesne']].astype(str)
+
+average = detect_obj.groupby(['Nesne'])['Deger'].mean().to_frame()
+
+print(detect_obj)
+#print(average)
+
+nesne = average.to_string()
+
+postString = nesne.split("\n",2)[2];
+
+print(postString)
+mailer.MailerFunc(postString)
+
 
 # Clean up
 cv2.destroyAllWindows()
 videostream.stop()
+

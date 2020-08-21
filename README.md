@@ -5,8 +5,29 @@ Bu çalışma içerisinde görüntü işleme, yapay zekâ, nesnelerin interneti 
 Proje Raspberry Pi adlı mikroişlemci ile gerçekleştirilmiştir. İşletim sistemi olarak ise debian tabanlı Raspbian OS kullanılmıştır.
 
 *Uygulamanın çalışması için OpenCV yüklü olması gerekiyor.
-
-Çalışmada, CSI arayüzü ile bağlanılan PiCam ve PIR sensörü kullanılmıştır.
+*Çalışmada, CSI arayüzü ile bağlanılan PiCam ve PIR sensörü kullanılmıştır.
+*Bu çalışmada PIR sensörü 23 numaralı pine bağlanmıştır.
 
 ![](https://github.com/FurkanDemiray/PiAlarm/blob/master/picam.png)
 ![](https://github.com/FurkanDemiray/PiAlarm/blob/master/pir.jpg)
+
+### Run
+
+Uygulamanın bulunduuğu dizine gidiyoruz.
+
+`$ cd [klasör_Adi]`
+
+Öncelikle env aktif hale getiriyoruz.
+
+`$ source tflite1-env/bin/activate`
+
+Daha sonra `<starter.py>` çalıştırıyoruz.
+
+`$ python3 starter.py`
+
+### Ekran Görüntüleri
+
+![](https://github.com/FurkanDemiray/PiAlarm/blob/master/screenshot.png)
+
+![](https://github.com/FurkanDemiray/PiAlarm/blob/master/obj_exam1.png)
+![](https://github.com/FurkanDemiray/PiAlarm/blob/master/obj_exam2.png)

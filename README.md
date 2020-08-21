@@ -27,7 +27,14 @@ Daha sonra `<starter.py>` çalıştırıyoruz.
 
 ### Ekran Görüntüleri
 
+> 15 sn. boyunca süren analiz.
+
 ![](https://github.com/FurkanDemiray/PiAlarm/blob/master/screenshot.png)
 
+> Her karede tespit edilmiş tüm nesneler ve tahmini doğruluk oranları.
+
 ![](https://github.com/FurkanDemiray/PiAlarm/blob/master/obj_exam1.png)
+
+> Nesnelerin benzersiz ve doğruluk ortalaması alınmış hali.
+
 ![](https://github.com/FurkanDemiray/PiAlarm/blob/master/obj_exam2.png)

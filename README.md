@@ -13,9 +13,12 @@ Proje Raspberry Pi adlı mikroişlemci ile gerçekleştirilmiştir. İşletim si
 
 ### Run
 
+mailer.py dosyasındaki email ve password kısımlarına kullandığımız gmail(smtp modülü gmail için hazırlandı) bilgilerini giriyoruz.
+Not: Gmail ayarlarınızda daha az güvenli uygulama erişimine izin vermesi gerekiyor. ( https://myaccount.google.com/lesssecureapps )
+
 Uygulamanın bulunduuğu dizine gidiyoruz.
 
-`$ cd [klasör_Adi]`
+`$ cd PiAlarm`
 
 Öncelikle env aktif hale getiriyoruz.
 
@@ -38,3 +41,7 @@ Daha sonra `<starter.py>` çalıştırıyoruz.
 > Nesnelerin benzersiz ve doğruluk ortalaması alınmış hali.
 
 ![](https://github.com/FurkanDemiray/PiAlarm/blob/master/obj_exam2.png)
+
+> Gönderilen mail.
+
+![](https://github.com/FurkanDemiray/PiAlarm/blob/master/mail.png)

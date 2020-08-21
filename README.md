@@ -5,8 +5,43 @@ Bu çalışma içerisinde görüntü işleme, yapay zekâ, nesnelerin interneti 
 Proje Raspberry Pi adlı mikroişlemci ile gerçekleştirilmiştir. İşletim sistemi olarak ise debian tabanlı Raspbian OS kullanılmıştır.
 
 *Uygulamanın çalışması için OpenCV yüklü olması gerekiyor.
-
-Çalışmada, CSI arayüzü ile bağlanılan PiCam ve PIR sensörü kullanılmıştır.
+*Çalışmada, CSI arayüzü ile bağlanılan PiCam ve PIR sensörü kullanılmıştır.
+*Bu çalışmada PIR sensörü 23 numaralı pine bağlanmıştır.
 
 ![](https://github.com/FurkanDemiray/PiAlarm/blob/master/picam.png)
 ![](https://github.com/FurkanDemiray/PiAlarm/blob/master/pir.jpg)
+
+### Run
+
+mailer.py dosyasındaki email ve password kısımlarına kullandığımız gmail(smtp modülü gmail için hazırlandı) bilgilerini giriyoruz.
+Not: Gmail ayarlarınızda daha az güvenli uygulama erişimine izin vermesi gerekiyor. ( https://myaccount.google.com/lesssecureapps )
+
+Uygulamanın bulunduuğu dizine gidiyoruz.
+
+`$ cd PiAlarm`
+
+Öncelikle env aktif hale getiriyoruz.
+
+`$ source tflite1-env/bin/activate`
+
+Daha sonra `<starter.py>` çalıştırıyoruz.
+
+`$ python3 starter.py`
+
+### Ekran Görüntüleri
+
+> 15 sn. boyunca süren analiz.
+
+![](https://github.com/FurkanDemiray/PiAlarm/blob/master/screenshot.png)
+
+> Her karede tespit edilmiş tüm nesneler ve tahmini doğruluk oranları.
+
+![](https://github.com/FurkanDemiray/PiAlarm/blob/master/obj_exam1.png)
+
+> Nesnelerin benzersiz ve doğruluk ortalaması alınmış hali.
+
+![](https://github.com/FurkanDemiray/PiAlarm/blob/master/obj_exam2.png)
+
+> Gönderilen mail.
+
+![](https://github.com/FurkanDemiray/PiAlarm/blob/master/mail.png)
